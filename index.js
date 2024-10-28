@@ -12,9 +12,10 @@ let db;
 
 (async () => {
   db = await open({
-    filename: "./BD4_Assignment1/database.sqlite",
+    filename: path.join(__dirname, "BD4_Assignment1/database.sqlite"),
     driver: sqlite3.Database,
   });
+  
 })();
 
 async function fetchAllResturants() {
