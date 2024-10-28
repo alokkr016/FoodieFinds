@@ -2,6 +2,7 @@ const express = require("express");
 let cors = require("cors");
 let sqlite3 = require("sqlite3");
 let { open } = require("sqlite");
+const path = require("path");
 
 const app = express();
 const port = process.env.PORT || 3000;
