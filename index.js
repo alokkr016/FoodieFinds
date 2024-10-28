@@ -16,21 +16,20 @@ let db;
     filename: path.join(__dirname, "BD4_Assignment1/database.sqlite"),
     driver: sqlite3.Database,
   });
-  
 })();
 
-async function fetchAllResturants() {
+async function fetchAllRestaurants() {
   let query = "SELECT * from restaurants";
   let response = await db.all(query, []);
-  return { resturants: response };
+  return { restaurants: response };
 }
 
 app.get("/restaurants", async (req, res) => {
   try {
-    let results = await fetchAllResturants();
-    if (results.resturants.length === 0) {
+    let results = await fetchAllRestaurants();
+    if (results.restaurants.length === 0) {
       return res.status(404).json({
-        message: "No resturants found",
+        message: "No restaurants found",
       });
     }
     return res.status(200).json(results);
@@ -41,19 +40,19 @@ app.get("/restaurants", async (req, res) => {
   }
 });
 
-async function fetchResuturantById(id) {
+async function fetchRestaurantById(id) {
   let query = "SELECT * from restaurants where id = ?";
   let response = await db.get(query, [id]);
-  return { resturant: response };
+  return { restaurant: response };
 }
 
 app.get("/restaurants/details/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    let result = await fetchResuturantById(id);
-    if (result.resturant === undefined) {
+    let result = await fetchRestaurantById(id);
+    if (result.restaurant === undefined) {
       return res.status(404).json({
-        message: "No resturants found with id " + id,
+        message: "No restaurants found with id " + id,
       });
     }
     return res.status(200).json(result);
@@ -64,19 +63,19 @@ app.get("/restaurants/details/:id", async (req, res) => {
   }
 });
 
-async function fetchResuturantByCuisine(cuisine) {
+async function fetchRestaurantByCuisine(cuisine) {
   let query = "SELECT * from restaurants where cuisine = ?";
   let response = await db.all(query, [cuisine]);
-  return { resturant: response };
+  return { restaurants: response };
 }
 
 app.get("/restaurants/cuisine/:cuisine", async (req, res) => {
   try {
     let cuisine = req.params.cuisine;
-    let result = await fetchResuturantByCuisine(cuisine);
-    if (result.resturant.length == 0) {
+    let result = await fetchRestaurantByCuisine(cuisine);
+    if (result.restaurants.length == 0) {
       return res.status(404).json({
-        message: "No resturants found with cuisine " + cuisine,
+        message: "No restaurants found with cuisine " + cuisine,
       });
     }
     return res.status(200).json(result);
@@ -87,11 +86,11 @@ app.get("/restaurants/cuisine/:cuisine", async (req, res) => {
   }
 });
 
-async function fetchResuturantByFilter(isVeg, hasOutdoorSeating, isLuxury) {
+async function fetchRestaurantByFilter(isVeg, hasOutdoorSeating, isLuxury) {
   let query =
     "SELECT * from restaurants where isVeg = ? AND hasOutdoorSeating = ? AND isLuxury = ?";
   let response = await db.all(query, [isVeg, hasOutdoorSeating, isLuxury]);
-  return { resturant: response };
+  return { restaurants: response };
 }
 
 app.get("/restaurants/filter/", async (req, res) => {
@@ -100,16 +99,12 @@ app.get("/restaurants/filter/", async (req, res) => {
     let hasOutdoorSeating = req.query.hasOutdoorSeating;
     let isLuxury = req.query.isLuxury;
 
-    let result = await fetchResuturantByFilter(
-      isVeg,
-      hasOutdoorSeating,
-      isLuxury
-    );
+    let result = await fetchRestaurantByFilter(isVeg, hasOutdoorSeating, isLuxury);
 
-    if (result.resturant.length == 0) {
+    if (result.restaurants.length == 0) {
       return res.status(404).json({
         message:
-          "No resturants found with filter isVeg " +
+          "No restaurants found with filter isVeg " +
           isVeg +
           " hasOutdoorSeating " +
           hasOutdoorSeating +
@@ -125,18 +120,18 @@ app.get("/restaurants/filter/", async (req, res) => {
   }
 });
 
-async function getResturantSortedByRating() {
+async function getRestaurantSortedByRating() {
   let query = "SELECT * from restaurants ORDER BY rating DESC";
   let response = await db.all(query, []);
-  return { resturants: response };
+  return { restaurants: response };
 }
 
 app.get("/restaurants/sort-by-rating", async (req, res) => {
   try {
-    let result = await getResturantSortedByRating();
-    if (result.resturants.length === 0) {
+    let result = await getRestaurantSortedByRating();
+    if (result.restaurants.length === 0) {
       return res.status(404).json({
-        message: "No resturants found",
+        message: "No restaurants found",
       });
     }
     return res.status(200).json(result);
@@ -181,7 +176,7 @@ app.get("/dishes/details/:id", async (req, res) => {
     let result = await fetchDishesById(id);
     if (result.dish === undefined) {
       return res.status(404).json({
-        message: "No dishe found with id " + id,
+        message: "No dish found with id " + id,
       });
     }
     return res.status(200).json(result);
