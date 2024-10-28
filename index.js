@@ -222,7 +222,6 @@ async function getDishesSortedByPrice() {
 app.get("/dishes/sort-by-price", async (req, res) => {
   try {
     let result = await getDishesSortedByPrice();
-    console.log(result);
     if (result.dishes.length === 0) {
       return res.status(404).json({ message: "No dishes found" });
     }
